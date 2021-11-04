@@ -1,0 +1,31 @@
+# Part of the builder in the Container.
+FROM golang AS builder-service
+
+ARG BUILD_REF
+
+COPY . /service
+
+WORKDIR /service/app/services/sso-api/
+
+RUN CGO_ENABLED=0 go build -ldflags "-X main.build=${BUILD_REF}"
+
+
+# Run the Go Binary.
+FROM alpine
+
+ARG BUILD_DATE
+
+ARG BUILD_REF
+
+COPY --from=builder-service /service/app/services/sso-api/sso-api /service/sso-api
+
+WORKDIR /service
+
+CMD ["./sso-api"]
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.title="sso-api" \
+      org.opencontainers.image.source="https://github.com/miraddo/basic-sso/app/sso-api" \
+      org.opencontainers.image.revision="${BUILD_REF}" \
+      org.opencontainers.image.vendor="Miraddo"
+

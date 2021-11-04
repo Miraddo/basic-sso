@@ -1,0 +1,32 @@
+version: "3.8"  # optional since v1.27.0
+services:
+  api:
+    image: sso-api-amd64:1.0
+    container_name: ssoContainer
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      - backend
+  db:
+    image: mariadb
+    container_name: dbContainer
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    container_name: adminerContainer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+
+networks:
+  backend:
