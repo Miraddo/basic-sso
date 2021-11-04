@@ -10,6 +10,7 @@ This is a basic project to implement SSO with Go.
 -   [x] Implement Register Request
     -   [ ] Check User Exist
     -   [ ] Hash Password
+    -   [ ] Useful Comment
 -   [ ] Redirect to new Service (Could be Service A)
 -   [ ] Ask for username and password
 -   [ ] Send Token to Service (Could be Service A)
