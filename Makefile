@@ -26,13 +26,18 @@ sso-build:
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
-sso-run:
+sso-up:
 	docker-compose \
 	-f zarf/docker/docker-compose.yaml \
 	up
-
+	
 sso-down:
 	docker-compose \
 	-f zarf/docker/docker-compose.yaml \
 	down
+
+sso-run:
+	make sso-down
+	make sso-build
+	make sso-up
 # ==============================================================================

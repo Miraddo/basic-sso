@@ -1,3 +1,4 @@
+// Package main is a basic project to handle SSO system.
 package main
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/miraddo/basic-sso/app/tooling/database"
 )
 
+// RegisterHandler is got a request to register new user.
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var newUser database.User
 
@@ -21,20 +23,26 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	res, err := newUser.Insert()
 
-	if err != nil {
-		log.Fatalln(err)
-	}
+	var status string
 
-	if res == true {
+	switch {
+	case err != nil:
+		w.WriteHeader(http.StatusForbidden)
+		status = err.Error()
+
+	case res:
 		w.WriteHeader(http.StatusCreated)
-		log.Printf("User Successfuly Added!")
+		status = "User Successfully Added!"
+
+	default:
+		w.WriteHeader(http.StatusForbidden)
+		status = "User Already Exist!"
 	}
 
-	w.WriteHeader(http.StatusBadRequest)
-	log.Printf("User Already Exist!")
-
+	w.Write([]byte(status))
 }
 
+// main responsable to declare route and hande basic webservice.
 func main() {
 	mux := http.NewServeMux()
 
