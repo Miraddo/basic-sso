@@ -29,7 +29,7 @@ sso-build:
 sso-up:
 	docker-compose \
 	-f zarf/docker/docker-compose.yaml \
-	up
+	up -d
 	
 sso-down:
 	docker-compose \
@@ -40,4 +40,26 @@ sso-run:
 	make sso-down
 	make sso-build
 	make sso-up
+
+sso-logs:
+	docker-compose \
+	-f zarf/docker/docker-compose.yaml \
+	logs --follow --tail 10
 # ==============================================================================
+# Test Service
+
+service-test-up:
+	make sso-down
+	docker-compose \
+	-f zarf/docker/docker-compose.test.yaml \
+	up -d
+
+service-test-down:
+	docker-compose \
+	-f zarf/docker/docker-compose.test.yaml \
+	down
+
+service-test-logs:
+	docker-compose \
+	-f zarf/docker/docker-compose.test.yaml \
+	logs --follow --tail 10

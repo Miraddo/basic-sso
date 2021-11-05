@@ -1,0 +1,26 @@
+version: "3.8"  # optional since v1.27.0
+services:
+  db:
+    image: mariadb
+    container_name: dbContainer
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    container_name: adminerContainer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+
+networks:
+  backend:

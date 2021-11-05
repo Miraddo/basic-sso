@@ -55,7 +55,7 @@ func (u *User) Insert() (bool, error) {
 
 	db := new()
 
-	if !u.check(db) {
+	if u.check(db) {
 		return false, errors.New("User [" + u.Username + "] already exist!")
 	}
 
